@@ -2,7 +2,7 @@ package com.digilibrary.Tests;
 
 import com.digilibrary.ApiServer.IApiServer;
 import com.digilibrary.ApiServer.SimpleApiServer;
-import org.junit.Assert;
+import com.digilibrary.Logger.BasicLogger;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -12,18 +12,12 @@ class SimpleApiServerTest {
 
     @org.junit.Before
     public void setUp() {
-        apiServerInstance = SimpleApiServer.getInstance();
+        apiServerInstance = new SimpleApiServer(BasicLogger.getInstance());
     }
 
     @org.junit.After
     public void tearDown() {
 
-    }
-
-
-    @org.junit.jupiter.api.Test
-    void getInstance() {
-        assertNotNull(apiServerInstance);
     }
 
     @org.junit.jupiter.api.Test
