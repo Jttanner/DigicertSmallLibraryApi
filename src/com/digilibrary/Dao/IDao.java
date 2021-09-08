@@ -11,6 +11,7 @@ public interface IDao {
     FullLibrary getBooksByAuthor(String authorName);
     FullLibrary getBooksByMultipleAuthors(ArrayList<String> authorNames);
     FullLibrary getAllbooks();
-    Book AddSingleBook(Book book); //returns object used to add
-    FullLibrary AddMultipleBooks(FullLibrary book); //returns objects used to add
+    Book addSingleBook(Book book); //returns object used to add
+    FullLibrary addMultipleBooks(FullLibrary book); //returns objects used to add
+    Book deleteSingleBook(Book book); //returned deleted book
 }

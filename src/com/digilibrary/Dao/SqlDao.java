@@ -143,7 +143,7 @@ public class SqlDao implements IDao {
     }
 
     @Override
-    public Book AddSingleBook(Book book) {
+    public Book addSingleBook(Book book) {
         String query = "INSERT INTO Books (title, author) VALUES(?,?)";
         try (Connection conn = this.connect();
              PreparedStatement pstmt  = conn.prepareStatement(query)){
@@ -162,7 +162,7 @@ public class SqlDao implements IDao {
     }
 
     @Override
-    public FullLibrary AddMultipleBooks(FullLibrary books) {
+    public FullLibrary addMultipleBooks(FullLibrary books) {
         String query = "INSERT INTO Books (title, author) VALUES " + createParamListForInsertMultiple(books.getBookList());
         try (Connection conn = this.connect();
              PreparedStatement pstmt  = conn.prepareStatement(query)){
@@ -182,6 +182,26 @@ public class SqlDao implements IDao {
         }
         return books;
     }
+
+    @Override
+    public Book deleteSingleBook(Book book) {
+        String query = "DELETE FROM Books WHERE title = ? and author = ?";
+        try (Connection conn = this.connect();
+             PreparedStatement pstmt  = conn.prepareStatement(query)){
+
+            // set the params
+            pstmt.setString(1, book.getTitle());
+            pstmt.setString(2, book.getAuthor());
+
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            logger.LogException(e, "error getting books by title in sql dao");
+            return null;
+        }
+        return book;
+    }
+
 
     private String createParamListForInsertMultiple(ArrayList<Book> listOfParams){
         StringBuilder sb = new StringBuilder();

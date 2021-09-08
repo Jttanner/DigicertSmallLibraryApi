@@ -6,24 +6,19 @@ import com.digilibrary.Dto.FailureResponse;
 import com.digilibrary.Dto.GenericBooksRequest;
 import com.digilibrary.Dto.GenericResponse;
 import com.digilibrary.Logger.BasicLogger;
-import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
-import javax.xml.ws.http.HTTPException;
-import java.beans.Encoder;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.util.ArrayList;
 
 public class AddBookHandler extends BaseHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
 
         OutputStream respBody = httpExchange.getResponseBody();
-        Encoder encoder = new Encoder();
         try {
             if (httpExchange.getRequestMethod().equalsIgnoreCase("put")) {
                 httpExchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
@@ -37,17 +32,17 @@ public class AddBookHandler extends BaseHandler implements HttpHandler {
                 try {
                     switch (addItemRequest.requestType){
                         case "addSingle":
-                            Book addedBook = dao.AddSingleBook(addItemRequest.relatedBooks.getBookList().get(0));
+                            Book addedBook = dao.addSingleBook(addItemRequest.relatedBooks.getBookList().get(0));
                             if (addedBook == null)
-                                throw new Exception("Bad AddBook request");
+                                throw new Exception("Bad addBook request");
                             addedBooks = new FullLibrary();
                             addedBooks.addBook(addedBook);
                             response = new GenericResponse(addItemRequest.requestType, "success", addedBooks);
                             break;
                         case "addMultiple":
-                            addedBooks = dao.AddMultipleBooks(addItemRequest.relatedBooks);
+                            addedBooks = dao.addMultipleBooks(addItemRequest.relatedBooks);
                             if (addedBooks == null)
-                                throw new Exception("Bad AddBook request");
+                                throw new Exception("Bad addBook request");
                             response = new GenericResponse(addItemRequest.requestType, "success", addedBooks);
                             break;
                         default:
