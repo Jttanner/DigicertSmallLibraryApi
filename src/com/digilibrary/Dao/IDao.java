@@ -14,4 +14,5 @@ public interface IDao {
     Book addSingleBook(Book book); //returns object used to add
     FullLibrary addMultipleBooks(FullLibrary book); //returns objects used to add
     Book deleteSingleBook(Book book); //returned deleted book
+    Book updateSingleBook(Book book); //returns updated book
 }

@@ -37,7 +37,7 @@ public class DeleteBookHandler extends BaseHandler implements HttpHandler {
                             deletedBooks.addBook(deletedBook);
                             response = new GenericResponse(addItemRequest.requestType, "success", deletedBooks);
                             break;
-                        case "deleteMultiple":
+                        case "deleteMultiple": //a good change would be to make a better request object for bulk deletes
                             for(Book bookToDelete : addItemRequest.relatedBooks.getBookList()){
                                 Book currDeletedBook = dao.deleteSingleBook(bookToDelete);
                                 deletedBooks.addBook(currDeletedBook);
@@ -50,7 +50,7 @@ public class DeleteBookHandler extends BaseHandler implements HttpHandler {
                             response = new GenericResponse(addItemRequest.requestType, "success", deletedBooks);
                             break;
                         default:
-                            throw new Exception("Bad AddBook request");
+                            throw new Exception("Bad delete request");
                     }
 
                     encode(response,respBody);

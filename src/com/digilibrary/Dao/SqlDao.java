@@ -46,7 +46,7 @@ public class SqlDao implements IDao {
 
             // loop through the result set
             while (rs.next()) {
-                foundBook = new Book(rs.getString("title"), rs.getString("author"));
+                foundBook = new Book(rs.getString("title"), rs.getString("author"), rs.getString("id"));
             }
         } catch (SQLException e) {
             logger.LogException(e, "error getting books by title in sql dao");
@@ -70,7 +70,7 @@ public class SqlDao implements IDao {
 
             // loop through the result set
             while (rs.next()) {
-                foundBooks.addBook(new Book(rs.getString("title"), rs.getString("author")));
+                foundBooks.addBook(new Book(rs.getString("title"), rs.getString("author"), rs.getString("id")));
             }
         } catch (SQLException e) {
             logger.LogException(e, "error getting books by title in sql dao");
@@ -92,7 +92,7 @@ public class SqlDao implements IDao {
 
              // loop through the result set
              while (rs.next()) {
-                 foundBooks.addBook(new Book(rs.getString("title"), rs.getString("author")));
+                 foundBooks.addBook(new Book(rs.getString("title"), rs.getString("author"), rs.getString("id")));
              }
         } catch (SQLException e) {
             logger.LogException(e, "error getting books by title in sql dao");
@@ -117,7 +117,7 @@ public class SqlDao implements IDao {
 
             // loop through the result set
             while (rs.next()) {
-                foundBooks.addBook(new Book(rs.getString("title"), rs.getString("author")));
+                foundBooks.addBook(new Book(rs.getString("title"), rs.getString("author"), rs.getString("id")));
             }
         } catch (SQLException e) {
             logger.LogException(e, "error getting books by title in sql dao");
@@ -135,7 +135,7 @@ public class SqlDao implements IDao {
 
             // loop through the result set
             while (rs.next()) {
-                foundBooks.addBook(new Book(rs.getString("title"), rs.getString("author")));
+                foundBooks.addBook(new Book(rs.getString("title"), rs.getString("author"), rs.getString("id")));
             }
         } catch (SQLException e) {
             logger.LogException(e, "error getting books by title in sql dao");
@@ -186,13 +186,32 @@ public class SqlDao implements IDao {
 
     @Override
     public Book deleteSingleBook(Book book) {
-        String query = "DELETE FROM Books WHERE title = ? and author = ?";
+        String query = "DELETE FROM Books WHERE id = ?";
+        try (Connection conn = this.connect();
+             PreparedStatement pstmt  = conn.prepareStatement(query)){
+
+            // set the params
+            pstmt.setString(1, book.getId());
+
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            logger.LogException(e, "error getting books by title in sql dao");
+            return null;
+        }
+        return book;
+    }
+
+    @Override
+    public Book updateSingleBook(Book book) {
+        String query = "UPDATE Books SET title = ?, author = ? WHERE id = ?";
         try (Connection conn = this.connect();
              PreparedStatement pstmt  = conn.prepareStatement(query)){
 
             // set the params
             pstmt.setString(1, book.getTitle());
             pstmt.setString(2, book.getAuthor());
+            pstmt.setString(3, book.getId());
 
             pstmt.executeUpdate();
 

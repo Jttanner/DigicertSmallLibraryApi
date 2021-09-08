@@ -77,7 +77,7 @@ public class GetBookHandler extends BaseHandler implements HttpHandler {
                             response = new GenericResponse(addItemRequest.requestType, "success", foundBooks);
                             break;
                         default:
-                            throw new Exception("Bad AddBook request");
+                            throw new Exception("Bad get request");
                     }
 
                     encode(response,respBody);
