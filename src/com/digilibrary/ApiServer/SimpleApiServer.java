@@ -1,6 +1,10 @@
 package com.digilibrary.ApiServer;
 
 
+import com.digilibrary.Handlers.AddBookHandler;
+import com.digilibrary.Handlers.DeleteBookHandler;
+import com.digilibrary.Handlers.GetBookHandler;
+import com.digilibrary.Handlers.UpdateBookHandler;
 import com.digilibrary.Logger.ILogger;
 import com.sun.net.httpserver.HttpServer;
 
@@ -14,6 +18,7 @@ public class SimpleApiServer implements IApiServer {
     private ILogger logger;
 
     public SimpleApiServer(HttpServer httpServer, ILogger logger){
+        this.httpServer = httpServer;
         this.logger = logger;
     }
 
@@ -30,7 +35,11 @@ public class SimpleApiServer implements IApiServer {
         //register the paths we need to listen to
         logger.LogInfo("Registering Handlers");
 
-        //httpServer.createContext("path", new HandlerObject());
+        httpServer.createContext("/AddBook", new AddBookHandler());
+        httpServer.createContext("/DeleteBook", new DeleteBookHandler());
+        httpServer.createContext("/GetBook", new GetBookHandler());
+        httpServer.createContext("/UpdateBook", new UpdateBookHandler());
+
 
         logger.LogInfo("starting server");
 
