@@ -7,6 +7,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 
 
 //giving examples of how we could implement adao using sql
@@ -54,7 +55,7 @@ public class SqlDao implements IDao {
     }
 
     @Override
-    public FullLibrary getListOfBooksByTitles(ArrayList<String> bookTitles) {
+    public FullLibrary getListOfBooksByTitles(List<String> bookTitles) {
         String query = "SELECT * FROM Books WHERE title IN " + CreateParamListForInQuery(bookTitles);
         FullLibrary foundBooks = new FullLibrary();
         try (Connection conn = this.connect();
@@ -100,7 +101,7 @@ public class SqlDao implements IDao {
     }
 
     @Override
-    public FullLibrary getBooksByMultipleAuthors(ArrayList<String> authorNames) {
+    public FullLibrary getBooksByMultipleAuthors(List<String> authorNames) {
         //build the IN statement
         String query = "SELECT * FROM Books WHERE author IN " + CreateParamListForInQuery(authorNames);
         FullLibrary foundBooks = new FullLibrary();
@@ -203,7 +204,7 @@ public class SqlDao implements IDao {
     }
 
 
-    private String createParamListForInsertMultiple(ArrayList<Book> listOfParams){
+    private String createParamListForInsertMultiple(List<Book> listOfParams){
         StringBuilder sb = new StringBuilder();
         for(int i = 0; i < listOfParams.size(); i++){
             sb.append("(");
@@ -218,7 +219,7 @@ public class SqlDao implements IDao {
         return sb.toString();
     }
 
-    private String CreateParamListForInQuery(ArrayList<String> listOfParams){
+    private String CreateParamListForInQuery(List<String> listOfParams){
         StringBuilder sb = new StringBuilder();
         sb.append("(");
         for(int i = 0; i < listOfParams.size(); i++){
