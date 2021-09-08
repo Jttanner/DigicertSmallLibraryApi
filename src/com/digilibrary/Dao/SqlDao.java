@@ -38,7 +38,7 @@ public class SqlDao implements IDao {
         try (Connection conn = this.connect();
             PreparedStatement pstmt  = conn.prepareStatement(query)){
 
-            // set the value
+            // set the param
             pstmt.setString(1,bookTitle);
 
             ResultSet rs  = pstmt.executeQuery();
@@ -84,7 +84,7 @@ public class SqlDao implements IDao {
         try (Connection conn = this.connect();
              PreparedStatement pstmt  = conn.prepareStatement(query)){
 
-             // set the value
+             // set the param
              pstmt.setString(1,authorName);
 
              ResultSet rs  = pstmt.executeQuery();
@@ -140,6 +140,62 @@ public class SqlDao implements IDao {
             logger.LogException(e, "error getting books by title in sql dao");
         }
         return foundBooks;
+    }
+
+    @Override
+    public Book AddSingleBook(Book book) {
+        String query = "INSERT INTO Books (title, author) VALUES(?,?)";
+        try (Connection conn = this.connect();
+             PreparedStatement pstmt  = conn.prepareStatement(query)){
+
+            // set the params
+            pstmt.setString(1, book.getTitle());
+            pstmt.setString(2, book.getAuthor());
+
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            logger.LogException(e, "error getting books by title in sql dao");
+            return null;
+        }
+        return book;
+    }
+
+    @Override
+    public FullLibrary AddMultipleBooks(FullLibrary books) {
+        String query = "INSERT INTO Books (title, author) VALUES " + createParamListForInsertMultiple(books.getBookList());
+        try (Connection conn = this.connect();
+             PreparedStatement pstmt  = conn.prepareStatement(query)){
+
+            //set params list
+            int i = 1;
+            for(Book book : books.getBookList()){
+                pstmt.setString(i++, book.getTitle());
+                pstmt.setString(i++, book.getAuthor());
+            }
+
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            logger.LogException(e, "error getting books by title in sql dao");
+            return null;
+        }
+        return books;
+    }
+
+    private String createParamListForInsertMultiple(ArrayList<Book> listOfParams){
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < listOfParams.size(); i++){
+            sb.append("(");
+            sb.append(listOfParams.get(i).getTitle());
+            sb.append(",");
+            sb.append(listOfParams.get(i).getAuthor());
+            sb.append(")");
+            if (i != listOfParams.size() - 1){
+                sb.append(",");
+            }
+        }
+        return sb.toString();
     }
 
     private String CreateParamListForInQuery(ArrayList<String> listOfParams){

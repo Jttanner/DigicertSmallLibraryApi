@@ -11,6 +11,10 @@ public class FullLibrary {
         bookList = new ArrayList<>();
     }
 
+    public ArrayList<Book> getBookList() {
+        return bookList;
+    }
+
     //add a single book to the array
     public void addBook(Book book) {
         bookList.add(book); //handle if we are fine with duplicates in query

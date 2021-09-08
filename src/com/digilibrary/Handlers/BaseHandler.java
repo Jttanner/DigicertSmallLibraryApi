@@ -1,14 +1,17 @@
 package com.digilibrary.Handlers;
 
+import com.digilibrary.Dao.IDao;
+import com.digilibrary.Dao.SqlDao;
 import com.google.gson.Gson;
+import com.sun.xml.internal.bind.v2.model.core.ID;
 
 import java.io.*;
 
 //has stream read/write operations for the handlers to read the request
 //taken from online examples
 public class BaseHandler {
-    private Gson gson = new Gson();
-
+    protected Gson gson = new Gson();
+    protected IDao dao = new SqlDao(); //Should pass in specific type by DI, simplifying for this example
     /*
     The writeString method shows how to write a String to an OutputStream.
     */

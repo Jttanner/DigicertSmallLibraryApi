@@ -1,6 +1,7 @@
 package com.digilibrary.Dto;
 
 import com.digilibrary.Dto.BookLibrary.Book;
+import com.digilibrary.Dto.BookLibrary.FullLibrary;
 
 import java.util.ArrayList;
 
@@ -8,19 +9,19 @@ import java.util.ArrayList;
 public class GenericResponse {
     public String requestType;
     public String message;
-    public ArrayList<Book> relatedBooks;
+    public FullLibrary relatedBooks;
 
-    public GenericResponse(String requestType, String message, ArrayList<Book> relatedBooks) {
+    public GenericResponse(String requestType, String message, FullLibrary relatedBooks) {
         this.requestType = requestType;
         this.message = message;
         this.relatedBooks = relatedBooks;
     }
 
-    public ArrayList<Book> getRelatedBooks() {
+    public FullLibrary getRelatedBooks() {
         return relatedBooks;
     }
 
-    public void setRelatedBooks(ArrayList<Book> relatedBooks) {
+    public void setRelatedBooks(FullLibrary relatedBooks) {
         this.relatedBooks = relatedBooks;
     }
 
