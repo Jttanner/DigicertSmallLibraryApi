@@ -10,29 +10,19 @@ import java.util.logging.Logger;
 
 public class SimpleApiServer implements IApiServer {
 
-    private static final int MAX_WAITING_CONNECTIONS = 12;
     private HttpServer httpServer;
     private ILogger logger;
 
-    public SimpleApiServer(ILogger logger){
+    public SimpleApiServer(HttpServer httpServer, ILogger logger){
         this.logger = logger;
     }
 
     @Override
-    public void run(String port) {
+    public void run() {
 
         System.out.println("Initializing HTTP Server");
 
-        try {
-            // Create the HttpServer object
-            httpServer = HttpServer.create(
-                    new InetSocketAddress(Integer.parseInt(port)),
-                    MAX_WAITING_CONNECTIONS);
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-            return;
-        }
+
 
         // apparently required for HttpServer package, anything other than null not needed for this
         httpServer.setExecutor(null);
@@ -47,7 +37,7 @@ public class SimpleApiServer implements IApiServer {
         //Starts the server to run in the background.
         httpServer.start();
 
-        logger.LogInfo(String.format("server started and listening on port %s", port));
+        logger.LogInfo("server started");
     }
 
     @Override

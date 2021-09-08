@@ -3,31 +3,36 @@ package com.digilibrary.Tests;
 import com.digilibrary.ApiServer.IApiServer;
 import com.digilibrary.ApiServer.SimpleApiServer;
 import com.digilibrary.Logger.BasicLogger;
+import com.sun.net.httpserver.HttpServer;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class SimpleApiServerTest {
 
     private IApiServer apiServerInstance;
+    private HttpServer mockHttpServer;
 
-    @org.junit.Before
+    @BeforeEach
     public void setUp() {
-        apiServerInstance = new SimpleApiServer(BasicLogger.getInstance());
+        apiServerInstance = new SimpleApiServer(new MockHttpServer(), BasicLogger.getInstance());
     }
 
-    @org.junit.After
+    @AfterEach
     public void tearDown() {
 
     }
 
-    @org.junit.jupiter.api.Test
-    void run() {
-        apiServerInstance.run("8080");
+    @Test
+    void runTest() {
+        apiServerInstance.run();
         assertNotNull(apiServerInstance);
     }
 
-    @org.junit.jupiter.api.Test
-    void stop() {
+    @Test
+    void stopTest() {
         apiServerInstance.stop();
         assertNull(apiServerInstance);
     }
