@@ -1,8 +1,14 @@
 package com.digilibrary.Handlers;
 
+import com.google.gson.Gson;
+
 import java.io.*;
 
+//has stream read/write operations for the handlers to read the request
+//taken from online examples
 public class BaseHandler {
+    private Gson gson = new Gson();
+
     /*
     The writeString method shows how to write a String to an OutputStream.
     */
@@ -24,5 +30,18 @@ public class BaseHandler {
             sb.append(buf, 0, len);
         }
         return sb.toString();
+    }
+
+    /**
+     * This encodes java objects into JSON
+     *
+     * @param obj      The object to encode
+     * @param respBody The output stream
+     */
+    protected void encode(Object obj, OutputStream respBody) throws IOException {
+        OutputStreamWriter writer = new OutputStreamWriter(respBody);
+        writer.write(gson.toJson(obj));
+        writer.flush();
+
     }
 }
